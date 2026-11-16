@@ -1,0 +1,10 @@
+{
+  "api_key": "CHANGE_ME",
+  "user_agent": "OSFreeTool v1.0.0",
+  "base_url": "https://api.opensubtitles.com/api/v1",
+  "signup_url": "https://www.opensubtitles.com/en/users/sign_up",
+  "accounts_file": "accounts.json",
+  "proxies": [],
+  "captcha_key": null,
+  "out_dir": "subs"
+}
