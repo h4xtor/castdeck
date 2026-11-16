@@ -45,9 +45,14 @@ hentes fra adoptium.net) og signerings-nøglen `mb.keystore` ligger udenfor.
 6. **Signér og navngiv:**
 
    ```
-   apksigner sign --ks mb.keystore --ks-pass pass:... --ks-key-alias mb ^
-     --out MovieBench_x280_v9.apk build\out.apk
+   apksigner sign --ks mb.keystore --ks-pass pass:moviebench --ks-key-alias mb ^
+     --key-pass pass:moviebench --out MovieBench_x280_v9.apk build\out.apk
    ```
+
+Nøglen ligger i repo-roden (`mb.keystore`, 2,5 KB) og hemmelighederne i
+`NOEGLE-INFO.txt`: alias `mb`, adgangskode `moviebench`, pakke `sx.movybench`.
+Samme certifikat er brugt til alle udgivelser — mistes den, kan fremtidige
+udgivelser ikke opdatere de installerede APK'er.
 
 ## Kendte faldgruber
 

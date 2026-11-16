@@ -32,9 +32,9 @@ deliver/              klar-til-brug
 testpics/             skærmbilleder fra testene (1–5 v6-tid, 6–10 v8/v9 + Rayplayer)
 ```
 
-JDK'en (Temurin 21) og signerings-nøglen `mb.keystore` ligger ikke i repoet;
-alt andet til bygningen er med, så `build/BYG.md` virker direkte efter en clone.
-(vaerktoejer\tools lokalt er en dublet af tools\ og er ikke uploadet.)
+JDK'en (Temurin 21, hentes fra adoptium.net) er det eneste, der ikke er i
+repoet. Signerings-nøglen `mb.keystore` ligger i repo-roden med hemmeligheder
+i `NOEGLE-INFO.txt` (alias `mb`, kode `moviebench`).
 
 ## Status
 

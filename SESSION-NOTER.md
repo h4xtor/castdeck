@@ -15,9 +15,10 @@ Koden og leverancerne ovenfor + alt arbejdsområdet er uploadet:
 - `AGENTS.md` — instruktionsfilen til OpenCode-arbejdet.
 - `vaerktoejer/` lokalt er bekræftet en dublet af `tools/` og er derfor ikke
   uploadet.
-- Ligger ikke på branchen: JDK'en (hentes fra adoptium.net) og
-  signerings-nøglen `mb.keystore` (alias `mb`, pakke sx.movybench —
-  adgangskoden står i din lokale NØGLE-INFO.txt).
+- Ligger IKKE på branchen: JDK'en (hentes fra adoptium.net).
+- Signerings-nøglen `mb.keystore` + `NOEGLE-INFO.txt` ER uploadet på dit
+  ønske (alias `mb`, kode `moviebench`, pakke sx.movybench) — husk at sætte
+  repo'et til private, nu hvor nøglen er offentlig.
 
 ## Hvad der er lavet
 
