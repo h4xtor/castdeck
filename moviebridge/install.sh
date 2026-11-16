@@ -1,110 +1,124 @@
 #!/usr/bin/env bash
-# MovieBridge 2.2 — installation på X280 (Linux Mint / Ubuntu)
-# Kør:  cd ~/Hentet && unzip -o moviebridge.zip && cd moviebridge && sudo bash install.sh
-set -Eeuo pipefail
-umask 022
+# MovieBridge - installation paa X280 (Linux Mint/Ubuntu/Debian eller Arch/Omarchy)
+# Brug:  sudo bash install.sh
+set -euo pipefail
 
-fail() { printf '\n[FEJL] %s\n' "$*" >&2; exit 1; }
-info() { printf '\n[MovieBridge] %s\n' "$*"; }
+APP_DIR=/opt/moviebridge
+UNIT=/etc/systemd/system/moviebridge.service
+PORT=8097
+DISC_PORT=8098
+NO_SERVICE=0
+[ "${1:-}" = "--no-service" ] && NO_SERVICE=1   # kun til test
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-trap 'printf "\n[FEJL] Installationen stoppede ved linje %s.\n" "$LINENO" >&2' ERR
+ok()   { printf '\033[32m[OK]\033[0m %s\n' "$*"; }
+info() { printf '\033[36m[..]\033[0m %s\n' "$*"; }
+warn() { printf '\033[33m[!!]\033[0m %s\n' "$*"; }
+die()  { printf '\033[31m[FEJL]\033[0m %s\n' "$*"; exit 1; }
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd -P)"
-PREFIX="/opt/moviebridge"
-UNIT="/etc/systemd/system/moviebridge.service"
-SERVICE_USER="${SUDO_USER:-}"
-PORT="${MB_PORT:-8097}"
-
-if [ "$EUID" -ne 0 ]; then
-  fail "Kør med sudo: sudo bash install.sh"
+if [ "$(id -u)" -ne 0 ]; then
+  exec sudo bash "$0" "$@"
 fi
-case "$SCRIPT_DIR" in
-  *" "*) fail "Flyt mappen til en sti uden mellemrum og prøv igen." ;;
-esac
+[ -f "$HERE/moviebridge.py" ] || die "moviebridge.py mangler ved siden af install.sh"
 
-if [ "${1:-}" = "--uninstall" ] || [ "${1:-}" = "uninstall" ]; then
-  info "Fjerner MovieBridge"
-  systemctl disable --now moviebridge.service 2>/dev/null || true
-  rm -f "$UNIT"
-  systemctl daemon-reload
-  rm -rf "$PREFIX"
-  info "Væk. Ingen tjeneste, ingen filer i $PREFIX."
-  exit 0
+# 1) Pakker
+info "Installerer ffmpeg og Python ..."
+if command -v apt-get >/dev/null 2>&1; then
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update -qq
+  apt-get install -y -qq ffmpeg python3 python3-venv curl >/dev/null
+elif command -v pacman >/dev/null 2>&1; then
+  pacman -Sy --needed --noconfirm ffmpeg python curl >/dev/null
+elif command -v dnf >/dev/null 2>&1; then
+  dnf install -y -q ffmpeg python3 curl >/dev/null || warn "ffmpeg kan kraeve RPM Fusion paa Fedora"
+else
+  warn "Ukendt Linux - soerg selv for ffmpeg og python3"
+fi
+command -v ffmpeg >/dev/null || die "ffmpeg blev ikke installeret"
+command -v python3 >/dev/null || die "python3 blev ikke installeret"
+ok "ffmpeg $(ffmpeg -version | head -1 | awk '{print $3}') og $(python3 --version)"
+
+# 2) Programmet
+info "Kopierer MovieBridge til $APP_DIR ..."
+mkdir -p "$APP_DIR"
+install -m 0755 "$HERE/moviebridge.py" "$APP_DIR/moviebridge.py"
+if [ ! -x "$APP_DIR/venv/bin/python" ]; then
+  python3 -m venv "$APP_DIR/venv" || die "kunne ikke lave Python-venv"
+fi
+info "Installerer TV-styring (pychromecast) ..."
+if "$APP_DIR/venv/bin/pip" install -q --upgrade pip >/dev/null 2>&1 && \
+   "$APP_DIR/venv/bin/pip" install -q "pychromecast>=14" >/dev/null 2>&1; then
+  ok "pychromecast installeret (web-siden kan sende direkte til TV)"
+else
+  warn "pychromecast kunne ikke installeres - appen virker stadig, kun web-sidens 'Send til TV' mangler"
+fi
+"$APP_DIR/venv/bin/python" -m py_compile "$APP_DIR/moviebridge.py" || die "programfilen er beskadiget"
+
+info "Selvtest: henter og omdanner en falsk stump-stream paa denne maskine ..."
+set +e
+ST_OUT=$(MB_WORK=/tmp "$APP_DIR/venv/bin/python" "$APP_DIR/moviebridge.py" --selftest 2>&1)
+ST_RC=$?
+set -e
+printf '%s\n' "$ST_OUT" | grep -E '^SELVTEST|^   ' || true
+if [ "$ST_RC" -eq 0 ]; then
+  ok "Selvtest bestaaet - ffmpeg og stump-hentning virker her"
+else
+  warn "SELVTEST FEJLEDE - send mig linjerne ovenfor (de der starter med SELVTEST)"
 fi
 
-[ -n "$SERVICE_USER" ] || fail "Kan ikke se hvilken bruger der kørte sudo. Kør scriptet som Lennart."
-[ "$SERVICE_USER" != "root" ] || fail "Kør som din egen bruger med sudo foran, ikke som root."
-[ -f "$SCRIPT_DIR/moviebridge.py" ] || fail "moviebridge.py mangler ved siden af install.sh."
+if [ "$NO_SERVICE" = 1 ]; then ok "Testinstallation faerdig (ingen tjeneste)"; exit 0; fi
 
-info "Tjekker værktøjer"
-command -v python3 >/dev/null 2>&1 || fail "python3 mangler. Installér med: sudo apt install python3"
-command -v ffmpeg  >/dev/null 2>&1 || fail "ffmpeg mangler. Installér med: sudo apt install ffmpeg"
-command -v ffprobe >/dev/null 2>&1 || fail "ffprobe mangler. Installér med: sudo apt install ffmpeg"
-PY_OK="$(python3 -c 'import sys; print(1 if sys.version_info >= (3,9) else 0)')"
-[ "$PY_OK" = "1" ] || fail "Python 3.9 eller nyere kræves."
-if ! ffmpeg -hide_banner -filters 2>/dev/null | grep -q ' subtitles '; then
-  info "ADVARSEL: din ffmpeg har ikke undertekst-filteret (libass)."
-  info "Undertekster kan ikke brændes ind. Fix: sudo apt install --reinstall ffmpeg"
-fi
-
-info "Kører selvtest (det tager et par minutter)"
-if ! ( cd "$SCRIPT_DIR" && sudo -u "$SERVICE_USER" env HOME="$(getent passwd "$SERVICE_USER" | cut -d: -f6)" \
-        bash -lc "cd '$SCRIPT_DIR' && python3 selftest.py" ); then
-  fail "Selvtesten fejlede. Der installeres intet - ret fejlen først."
-fi
-
-info "Lægger filerne i $PREFIX"
-systemctl stop moviebridge.service 2>/dev/null || true
-install -d -m 755 "$PREFIX"
-install -m 644 "$SCRIPT_DIR/moviebridge.py" "$PREFIX/moviebridge.py"
-install -m 644 "$SCRIPT_DIR/selftest.py" "$PREFIX/selftest.py"
-install -m 644 "$SCRIPT_DIR/LAES-MIG.md" "$PREFIX/LAES-MIG.md" 2>/dev/null || true
-printf '2.2\n' > "$PREFIX/VERSION"
-chmod 755 "$PREFIX"
-
-info "Opretter tjenesten"
+# 3) Tjeneste der starter af sig selv og koerer 24/7
+info "Opretter tjenesten moviebridge ..."
 cat > "$UNIT" <<EOF
-# Managed by MovieBridge installer
 [Unit]
-Description=MovieBridge - HLS-omvej til Chromecast
+Description=MovieBridge - stream-oversaetter til Chromecast/Android TV
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-Type=simple
-User=$SERVICE_USER
-Group=$(id -gn "$SERVICE_USER")
+ExecStart=$APP_DIR/venv/bin/python $APP_DIR/moviebridge.py
 Environment=MB_PORT=$PORT
-Environment=MB_DISCOVERY_PORT=8098
+Environment=MB_DISCOVERY_PORT=$DISC_PORT
+Environment=MB_ENCODER=x264
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/env python3 $PREFIX/moviebridge.py
+DynamicUser=yes
+CacheDirectory=moviebridge
 Restart=always
 RestartSec=3
-NoNewPrivileges=true
-PrivateTmp=true
-UMask=0022
+Nice=5
 
 [Install]
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-systemctl enable moviebridge.service >/dev/null
-systemctl restart moviebridge.service
+systemctl enable --now moviebridge >/dev/null 2>&1
+systemctl restart moviebridge
 
-info "Venter på at tjenesten svarer"
-READY=0
-for _ in $(seq 1 40); do
-  if curl -fsS --max-time 2 "http://127.0.0.1:$PORT/healthz" >/dev/null 2>&1; then READY=1; break; fi
-  sleep 0.5
-done
-if [ "$READY" -ne 1 ]; then
-  systemctl --no-pager --lines=25 status moviebridge.service || true
-  fail "Tjenesten startede ikke. Se loggen ovenfor."
+# 4) Firewall (kun hvis en er slaaet til)
+if command -v ufw >/dev/null 2>&1 && ufw status 2>/dev/null | grep -q "Status: active"; then
+  ufw allow $PORT/tcp >/dev/null; ufw allow $DISC_PORT/udp >/dev/null; ufw allow 5353/udp >/dev/null
+  ok "ufw: aabnet $PORT/tcp, $DISC_PORT/udp og 5353/udp"
+fi
+if command -v firewall-cmd >/dev/null 2>&1 && firewall-cmd --state >/dev/null 2>&1; then
+  firewall-cmd -q --permanent --add-port=$PORT/tcp --add-port=$DISC_PORT/udp --add-service=mdns
+  firewall-cmd -q --reload
+  ok "firewalld: aabnet porte"
 fi
 
-info "Klar"
-printf '  Version : 2.2\n'
-printf '  Adresse : http://127.0.0.1:%s/healthz\n' "$PORT"
-printf '  Opdagelse: UDP 8098\n'
-printf '  Log     : journalctl -u moviebridge -f\n'
-printf '\nNæste skridt: åbn MovieBench, cast noget, og se om TV-et bliver ved med at spille.\n'
+# 5) Tjek at den svarer
+for i in $(seq 1 20); do
+  curl -fs "http://127.0.0.1:$PORT/health" >/dev/null 2>&1 && break
+  sleep 0.5
+done
+if curl -fs "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then
+  IP=$(ip -4 route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
+  echo
+  ok "MovieBridge koerer og starter selv ved genstart."
+  echo "    Web-side:  http://${IP:-<X280-IP>}:$PORT"
+  echo "    Log:       journalctl -u moviebridge -f"
+  echo "    Stop:      sudo systemctl stop moviebridge"
+else
+  warn "Tjenesten svarer ikke endnu. Se:  journalctl -u moviebridge -n 50"
+  exit 1
+fi

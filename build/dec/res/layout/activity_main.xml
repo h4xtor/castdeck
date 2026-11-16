@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <View android:background="@drawable/header_glow" android:layout_width="fill_parent" android:layout_height="150.0dip" />
+        <LinearLayout android:orientation="vertical" android:paddingTop="@dimen/hero_top" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="20.0dip" android:paddingEnd="16.0dip">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="@dimen/hero_size" android:textStyle="bold" android:textColor="@color/text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MovieBench" android:letterSpacing="-0.02" />
+                    <TextView android:textSize="11.5sp" android:textColor="@color/text_dim" android:id="@id/stats" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:text="cast · danske undertekster" />
+                </LinearLayout>
+                <TextView android:textSize="19.0sp" android:textColor="@color/text" android:gravity="center" android:id="@id/gear" android:background="@drawable/chip_bg" android:layout_width="46.0dip" android:layout_height="46.0dip" android:text="⚙" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/bg_search" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_marginTop="16.0dip" android:paddingStart="14.0dip" android:paddingEnd="10.0dip">
+                <TextView android:textSize="18.0sp" android:textColor="@color/text_dim" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⌕" />
+                <EditText android:textSize="14.0sp" android:textColor="@color/text" android:textColorHint="@color/text_faint" android:gravity="center_vertical" android:id="@id/filter" android:background="@null" android:layout_width="0.0dip" android:layout_height="fill_parent" android:hint="Søg efter side, spejl eller domæne…" android:singleLine="true" android:layout_weight="1.0" android:inputType="text" android:layout_marginStart="8.0dip" android:importantForAutofill="no" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+    <TextView android:textSize="9.5sp" android:textStyle="bold" android:textColor="@color/accent" android:id="@id/recentsLabel" android:paddingTop="14.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="SENEST BRUGT" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" android:letterSpacing="0.13" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/recents" android:visibility="gone" android:scrollbars="none" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="15.0dip" android:paddingEnd="15.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/list" android:paddingTop="4.0dip" android:paddingBottom="16.0dip" android:scrollbars="none" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" android:paddingStart="@dimen/grid_side" android:paddingEnd="@dimen/grid_side" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@color/bg_elev" android:layout_width="fill_parent" android:layout_height="58.0dip" android:paddingStart="10.0dip" android:paddingEnd="10.0dip">
+        <TextView android:textSize="12.0sp" android:textColor="@color/text" android:gravity="center" android:id="@id/tabSearch" android:background="@drawable/chip_bg" android:layout_width="0.0dip" android:layout_height="40.0dip" android:text="⌕  Søg" android:layout_weight="1.0" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
+        <TextView android:textSize="12.0sp" android:textColor="@color/text" android:gravity="center" android:id="@id/tabRecents" android:background="@drawable/chip_bg" android:layout_width="0.0dip" android:layout_height="40.0dip" android:text="◷  Seneste" android:layout_weight="1.0" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
+        <TextView android:textSize="12.0sp" android:textColor="@color/text" android:gravity="center" android:id="@id/tabCast" android:background="@drawable/chip_bg" android:layout_width="0.0dip" android:layout_height="40.0dip" android:text="⇪  Cast" android:layout_weight="1.0" android:layout_marginStart="4.0dip" android:layout_marginEnd="4.0dip" />
+    </LinearLayout>
+</LinearLayout>

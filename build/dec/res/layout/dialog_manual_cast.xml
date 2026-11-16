@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditText android:textSize="13.0sp" android:textColor="@color/text" android:textColorHint="@color/text_dim" android:id="@id/urlIn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="https://…/master.m3u8" android:minLines="2" android:inputType="textUri" android:importantForAutofill="no" />
+    <EditText android:textSize="13.0sp" android:textColor="@color/text" android:textColorHint="@color/text_dim" android:id="@id/nameIn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:hint="Titel på TV" android:inputType="text" android:importantForAutofill="no" />
+</LinearLayout>

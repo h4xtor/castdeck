@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditText android:textSize="14.0sp" android:textColor="@color/text" android:textColorHint="@color/text_dim" android:id="@id/tIn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Titel (fx The Odyssey)" android:inputType="text" android:importantForAutofill="no" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <EditText android:textSize="14.0sp" android:textColor="@color/text" android:textColorHint="@color/text_dim" android:id="@id/sIn" android:layout_width="0.0dip" android:layout_height="wrap_content" android:hint="Sæson" android:layout_weight="1.0" android:inputType="number" android:importantForAutofill="no" />
+        <EditText android:textSize="14.0sp" android:textColor="@color/text" android:textColorHint="@color/text_dim" android:id="@id/eIn" android:layout_width="0.0dip" android:layout_height="wrap_content" android:hint="Afsnit" android:layout_weight="1.0" android:inputType="number" android:layout_marginStart="12.0dip" android:importantForAutofill="no" />
+    </LinearLayout>
+    <TextView android:textSize="11.0sp" android:textColor="@color/text_dim" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="Sæson/afsnit udfyldes automatisk når siden er en serie." />
+</LinearLayout>

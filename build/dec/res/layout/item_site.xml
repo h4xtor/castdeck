@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/card_site" android:padding="@dimen/card_pad" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/card_margin"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="@dimen/mono_text" android:textStyle="bold" android:textColor="@color/accent" android:gravity="center" android:id="@id/monogram" android:background="@drawable/monogram_bg" android:layout_width="@dimen/mono_size" android:layout_height="@dimen/mono_size" />
+        <TextView android:textSize="10.0sp" android:textColor="@color/text_faint" android:gravity="end" android:id="@id/mirrorCount" android:layout_width="0.0dip" android:layout_height="wrap_content" android:maxLines="1" android:layout_weight="1.0" android:layout_marginStart="8.0dip" />
+    </LinearLayout>
+    <TextView android:textSize="@dimen/site_name" android:textStyle="bold" android:textColor="@color/text" android:ellipsize="end" android:id="@id/siteName" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:maxLines="1" />
+    <TextView android:textSize="@dimen/site_note" android:textColor="@color/text_dim" android:ellipsize="end" android:id="@id/siteNote" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:maxLines="2" android:minLines="2" />
+</LinearLayout>

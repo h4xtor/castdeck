@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="UNDERTEKSTER">
+        <ListPreference android:entries="@array/lang_labels" android:title="Standardsprog" android:key="lang" android:summary="Sproget der søges i først" android:defaultValue="da" android:entryValues="@array/lang_values" />
+        <SwitchPreferenceCompat android:title="Auto-vælg undertekst" android:key="auto_sub" android:summary="Tag bedste hit automatisk når CC trykkes" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:title="Provider: OpenSubtitles" android:key="prov_os" android:summary="OpenSubtitles: legacy uden key + REST når key er sat" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:title="Provider: SubDL (kræver key)" android:key="prov_subdl" android:defaultValue="true" />
+        <EditTextPreference android:title="OpenSubtitles API key" android:key="os_key" android:summary="Frivillig · opensubtitles.com" />
+        <EditTextPreference android:title="SubDL API key" android:key="subdl_key" android:summary="Frivillig · subdl.com" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="CAST">
+        <SwitchPreferenceCompat android:title="Auto-cast ved afspilning" android:key="auto_cast" android:summary="Send streamen automatisk når en cast-session er aktiv" android:defaultValue="true" />
+        <EditTextPreference android:title="Receiver app id" android:key="receiver" android:summary="CC1AD845 = Default Media Receiver. Egen receiver kræver app-genstart." android:defaultValue="CC1AD845" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="BROWSER">
+        <SwitchPreferenceCompat android:title="Desktop user-agent" android:key="desktop_ua" android:summary="Bedre playere på aggregator-sider" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:title="Blokér annonce-netværk" android:key="block_ads" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:title="Auto-next afsnit" android:key="auto_next" android:summary="Klikker sidens egen next-knap når afsnittet slutter" android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="OM">
+        <Preference android:title="MovieBench 1.0" android:summary="WebView-shell · Cast SDK · egen subtitle-engine. Ingen tracking, ingen konto." />
+    </PreferenceCategory>
+</PreferenceScreen>
