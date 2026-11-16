@@ -1,0 +1,46 @@
+01:49:42 lytter efter telefoner paa UDP 8098
+01:49:42 MovieBridge 1.1 klar paa http://<X280-IP>:8097  (encoder: x264)
+01:49:44 [7eb0d0d0bbf8] henter: 127.0.0.1:9402/cap/ad.mp4
+01:49:44 [7eb0d0d0bbf8] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/7eb0d0d0bbf8/index.m3u8
+01:49:44 [7eb0d0d0bbf8] kilde: mov,mp4,m4a,3gp,3g2,mj2, varighed 0 min 06 sek, stoerrelse 2.0 MB
+01:49:44 [7eb0d0d0bbf8] kildens svar: HTTP 206, Content-Type=video/mp4, Content-Length=1000000, Content-Range=bytes 0-999999/1962800, Accept-Ranges=bytes
+01:49:44 [7eb0d0d0bbf8] ADVARSEL: kilden er kun 6 sek lang - det er nok en reklame eller forhaandsvisning, ikke selve filmen
+01:49:44 [7eb0d0d0bbf8] plan: video h264 kopieres, lyd aac kopieres
+01:49:44 [7eb0d0d0bbf8] faerdig: 1 stykker = 0 min 06 sek video
+01:49:44 [7eb0d0d0bbf8] ffmpeg: [http @ 0x562c6204c540] Stream ends prematurely at 1000000, should be 1962800
+01:49:44 [7eb0d0d0bbf8] ffmpeg: [http @ 0x562c6204c540] Will reconnect at 1000000 in 0 second(s), error=Input/output error.
+01:49:47 [7eb0d0d0bbf8] 127.0.0.1 henter playlisten (1 stykker klar)
+01:49:47 [7eb0d0d0bbf8] 127.0.0.1 henter seg00000.ts (1. stykke hentet, 1974 KB)
+01:49:47 [ea6af30ba5a1] henter: 127.0.0.1:9402/cap/ad.mp4
+01:49:47 [ea6af30ba5a1] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/ea6af30ba5a1/index.m3u8
+01:49:47 [ea6af30ba5a1] kilde: mov,mp4,m4a,3gp,3g2,mj2, varighed 0 min 06 sek, stoerrelse 2.0 MB
+01:49:47 [ea6af30ba5a1] kildens svar: HTTP 206, Content-Type=video/mp4, Content-Length=1000000, Content-Range=bytes 0-999999/1962800, Accept-Ranges=bytes
+01:49:47 [ea6af30ba5a1] ADVARSEL: kilden er kun 6 sek lang - det er nok en reklame eller forhaandsvisning, ikke selve filmen
+01:49:47 [ea6af30ba5a1] plan: video h264 kopieres, lyd aac kopieres
+01:49:47 [ea6af30ba5a1] faerdig: 1 stykker = 0 min 06 sek video
+01:49:47 [ea6af30ba5a1] ffmpeg: [http @ 0x55fcbc562540] Stream ends prematurely at 1000000, should be 1962800
+01:49:47 [ea6af30ba5a1] ffmpeg: [http @ 0x55fcbc562540] Will reconnect at 1000000 in 0 second(s), error=Input/output error.
+01:49:50 [d2e60bf88fd0] henter: 127.0.0.1:9402/trunc/long_fast.mp4
+01:49:50 [d2e60bf88fd0] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/d2e60bf88fd0/index.m3u8
+01:49:50 [d2e60bf88fd0] kilde: mov,mp4,m4a,3gp,3g2,mj2, varighed 1 min 00 sek, stoerrelse 23.1 MB
+01:49:50 [d2e60bf88fd0] kildens svar: HTTP 206, Content-Type=video/mp4, Content-Length=23079078, Content-Range=bytes 0-23079077/23079078, Accept-Ranges=bytes
+01:49:50 [d2e60bf88fd0] ADVARSEL: kilden er kun 60 sek lang - det er nok en reklame eller forhaandsvisning, ikke selve filmen
+01:49:50 [d2e60bf88fd0] plan: video h264 kopieres, lyd aac kopieres
+01:49:50 [d2e60bf88fd0] faerdig: 6 stykker = 1 min 00 sek video
+01:49:50 [d2e60bf88fd0] ffmpeg: [http @ 0x55d669e03b00] Will reconnect at 21000000 in 0 second(s), error=Input/output error.
+01:49:50 [d2e60bf88fd0] ffmpeg: [http @ 0x55d669e03b00] Stream ends prematurely at 22000000, should be 23079078
+01:49:50 [d2e60bf88fd0] ffmpeg: [http @ 0x55d669e03b00] Will reconnect at 22000000 in 0 second(s), error=Input/output error.
+01:49:50 [d2e60bf88fd0] ffmpeg: [http @ 0x55d669e03b00] Stream ends prematurely at 23000000, should be 23079078
+01:49:50 [d2e60bf88fd0] ffmpeg: [http @ 0x55d669e03b00] Will reconnect at 23000000 in 0 second(s), error=Input/output error.
+01:49:56 [6c9c689fdbe8] henter: 127.0.0.1:9402/trunc/long_fast.mp401:49:56 [6c9c689fdbe8] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/6c9c689fdbe8/index.m3u8
+
+01:49:56 [6c9c689fdbe8] kilde: mov,mp4,m4a,3gp,3g2,mj2, varighed 1 min 00 sek, stoerrelse 23.1 MB
+01:49:56 [6c9c689fdbe8] kildens svar: HTTP 206, Content-Type=video/mp4, Content-Length=23079078, Content-Range=bytes 0-23079077/23079078, Accept-Ranges=bytes
+01:49:56 [6c9c689fdbe8] ADVARSEL: kilden er kun 60 sek lang - det er nok en reklame eller forhaandsvisning, ikke selve filmen
+01:49:56 [6c9c689fdbe8] plan: video h264 kopieres, lyd aac kopieres
+01:49:56 [6c9c689fdbe8] faerdig: 6 stykker = 1 min 00 sek video
+01:49:56 [6c9c689fdbe8] ffmpeg: [http @ 0x55792777bb00] Will reconnect at 21000000 in 0 second(s), error=Input/output error.
+01:49:56 [6c9c689fdbe8] ffmpeg: [http @ 0x55792777bb00] Stream ends prematurely at 22000000, should be 23079078
+01:49:56 [6c9c689fdbe8] ffmpeg: [http @ 0x55792777bb00] Will reconnect at 22000000 in 0 second(s), error=Input/output error.
+01:49:56 [6c9c689fdbe8] ffmpeg: [http @ 0x55792777bb00] Stream ends prematurely at 23000000, should be 23079078
+01:49:56 [6c9c689fdbe8] ffmpeg: [http @ 0x55792777bb00] Will reconnect at 23000000 in 0 second(s), error=Input/output error.

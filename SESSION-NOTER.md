@@ -4,6 +4,21 @@ Denne branch (`OpenCode-Moviebench`) er hele arbejdsstanden fra
 OpenCode-sessionen. Denne fil er noter til dig selv, når du er hjemme —
 samtalen med OpenCode følger ikke med, men alt det praktiske gør.
 
+## Alt på branchen (fuld gennemsigtighed)
+
+Koden og leverancerne ovenfor + alt arbejdsområdet er uploadet:
+- `tools/` — hele byggeværktøjskassen (android.jar-35, d8, apktool,
+  apksigner m.m., ~392 MB), så `build/BYG.md` virker direkte efter en clone.
+- `mbtest/` — testmedier, fragmenter og logs fra tidligere forsøg.
+- `build/MovieBench_*.apk` — hele APK-historikken (cast, x280, trace,
+  v3–v9) + `mkdex.sh`.
+- `AGENTS.md` — instruktionsfilen til OpenCode-arbejdet.
+- `vaerktoejer/` lokalt er bekræftet en dublet af `tools/` og er derfor ikke
+  uploadet.
+- Ligger ikke på branchen: JDK'en (hentes fra adoptium.net) og
+  signerings-nøglen `mb.keystore` (alias `mb`, pakke sx.movybench —
+  adgangskoden står i din lokale NØGLE-INFO.txt).
+
 ## Hvad der er lavet
 
 **MovieBridge 2.3 (X280'eren)**

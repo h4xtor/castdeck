@@ -1,0 +1,10 @@
+21:58:31 lytter efter telefoner paa UDP 8098
+21:58:31 MovieBridge 1.0 klar paa http://<X280-IP>:8097  (encoder: x264)
+21:58:34 [9153283991cf] henter: 127.0.0.1:9401/hevc10.mkv
+21:58:34 [9153283991cf] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/9153283991cf/index.m3u8
+21:58:34 [9153283991cf] format matroska,webm: video hevc -> h264, lyd ac3 -> aac
+21:58:36 fandt 0 TV/Chromecast: 
+21:58:39 [9153283991cf] 127.0.0.1 henter playlisten (2 stykker klar)
+21:58:43 [9153283991cf] 127.0.0.1 henter playlisten (3 stykker klar)
+21:58:45 [9153283991cf] faerdig (5 segmenter)
+21:58:47 [9153283991cf] 127.0.0.1 henter playlisten (5 stykker klar)

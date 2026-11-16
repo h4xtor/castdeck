@@ -16,20 +16,25 @@ moviebridge/          MovieBridge 2.3 — Python-tjenesten på X280
   install.sh          installation, selvtest, systemd
   uninstall.sh        fjern tjenesten igen
   LES MIG.md          dansk vejledning
+tools/                byggeværktøjskassen (android.jar-35, d8, apksigner, apktool)
+mbtest/               testmedier og logs fra tidligere forsøg
 build/                MovieBench-app-projektet
   dec/                smali-træet (decompileret APK + vores patches)
   src/                Java-kilden til de nye/rettede klasser
   stubs/              compile-stubs (kun til javac — må aldrig dexes)
   repack.py           lægger classes3.dex i og aligner resources.arsc
+  mkdex.sh            d8-trinnet som shell-script
   BYG.md              byggeopskrift trin for trin
+  MovieBench_*.apk    hele APK-historikken (cast, x280, trace, v3–v9)
 deliver/              klar-til-brug
   MovieBridge_2_3.zip
   MovieBench_x280_v9.apk
 testpics/             skærmbilleder fra testene (1–5 v6-tid, 6–10 v8/v9 + Rayplayer)
 ```
 
-Værktøjerne (JDK, android.jar, apktool, d8, apksigner) og signerings-nøglen
-ligger ikke i repoet.
+JDK'en (Temurin 21) og signerings-nøglen `mb.keystore` ligger ikke i repoet;
+alt andet til bygningen er med, så `build/BYG.md` virker direkte efter en clone.
+(vaerktoejer\tools lokalt er en dublet af tools\ og er ikke uploadet.)
 
 ## Status
 

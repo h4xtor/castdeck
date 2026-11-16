@@ -1,0 +1,10 @@
+01:48:35 lytter efter telefoner paa UDP 8098
+01:48:35 MovieBridge 1.0 klar paa http://<X280-IP>:8097  (encoder: x264)
+01:48:36 [74f775479d26] henter: 127.0.0.1:9402/cap/long_fast.mp4
+01:48:36 [74f775479d26] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/74f775479d26/index.m3u8
+01:48:37 [74f775479d26] format mov,mp4,m4a,3gp,3g2,mj2: video h264 kopieres, lyd aac kopieres
+01:48:37 [74f775479d26] faerdig (6 segmenter)
+01:48:42 [089d3807f107] henter: 127.0.0.1:9402/trunc/long_fast.mp4
+01:48:42 [089d3807f107] telefon 127.0.0.1 bad om stream -> http://127.0.0.1:8097/s/089d3807f107/index.m3u8
+01:48:43 [089d3807f107] format mov,mp4,m4a,3gp,3g2,mj2: video h264 kopieres, lyd aac kopieres
+01:48:43 [089d3807f107] faerdig (6 segmenter)

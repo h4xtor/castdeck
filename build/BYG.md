@@ -2,8 +2,9 @@
 
 Her er hele app-projektet: smali-træet i `dec/`, Java-kilden til de nye/rettede
 klasser i `src/`, compile-stubs i `stubs/` og om-pakningen i `repack.py`.
-Værktøjerne (JDK 21, android.jar-35, apktool 2.11.1, d8, apksigner) og
-signerings-nøglen `mb.keystore` ligger ikke i repoet.
+Værktøjskassen ligger nu i `../tools/` (android.jar-35, d8, apktool,
+apksigner), så trinene virker direkte efter en clone. Kun JDK'en (Temurin 21,
+hentes fra adoptium.net) og signerings-nøglen `mb.keystore` ligger udenfor.
 
 ## Byggetrin (Windows PowerShell)
 

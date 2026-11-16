@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: MovieBridge/1.0 Python/3.13.18
+Date: Sun, 15 Nov 2026 20:54:11 GMT
+Content-Type: application/vnd.apple.mpegurl
+Content-Length: 237
+Cache-Control: no-cache
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, HEAD, POST, OPTIONS
+Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Content-Length, Content-Range, Content-Type, Accept-Ranges
+Connection: close
+

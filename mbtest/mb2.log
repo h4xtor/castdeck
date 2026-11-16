@@ -1,0 +1,11 @@
+21:55:11 lytter efter telefoner paa UDP 8098
+21:55:11 MovieBridge 1.0 klar paa http://<X280-IP>:8097  (encoder: x264)
+21:55:16 fandt 0 TV/Chromecast: 
+21:55:25 fandt 0 TV/Chromecast: 
+21:55:25 [086e770d219b] henter: 127.0.0.1:9401/h264.mp4
+21:55:25 [086e770d219b] format mov,mp4,m4a,3gp,3g2,mj2: video h264 kopieres, lyd aac kopieres
+21:55:25 [086e770d219b] faerdig (3 segmenter)
+21:55:37 fandt 0 TV/Chromecast: 
+21:56:40 [ee7537cdcea7] telefon 192.0.2.2 bad om stream -> http://192.0.2.2:8097/s/ee7537cdcea7/index.m3u8
+21:56:40 [ee7537cdcea7] henter: 127.0.0.1:9401/hevc10.mkv
+21:56:40 [ee7537cdcea7] format matroska,webm: video hevc -> h264, lyd ac3 -> aac
