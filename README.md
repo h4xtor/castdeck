@@ -10,7 +10,7 @@ moviebridge/          MovieBridge 2.2 — Python-tjenesten på X280
   moviebridge.py      hele tjenesten, kun stdlib
   selftest.py         22 kontroller mod falske kilder (type A og type B)
   install.sh          installation, selvtest, systemd
-  LÆS MIG.md          dansk vejledning til Lennart
+  LAES-MIG.md         dansk vejledning til Lennart
 ```
 
 ## Status
