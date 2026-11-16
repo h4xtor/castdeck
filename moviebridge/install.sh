@@ -58,7 +58,7 @@ systemctl stop moviebridge.service 2>/dev/null || true
 install -d -m 755 "$PREFIX"
 install -m 644 "$SCRIPT_DIR/moviebridge.py" "$PREFIX/moviebridge.py"
 install -m 644 "$SCRIPT_DIR/selftest.py" "$PREFIX/selftest.py"
-install -m 644 "$SCRIPT_DIR/LÆS MIG.md" "$PREFIX/LÆS MIG.md" 2>/dev/null || true
+install -m 644 "$SCRIPT_DIR/LAES-MIG.md" "$PREFIX/LAES-MIG.md" 2>/dev/null || true
 printf '2.2\n' > "$PREFIX/VERSION"
 chmod 755 "$PREFIX"
 
@@ -107,4 +107,4 @@ printf '  Version : 2.2\n'
 printf '  Adresse : http://127.0.0.1:%s/healthz\n' "$PORT"
 printf '  Opdagelse: UDP 8098\n'
 printf '  Log     : journalctl -u moviebridge -f\n'
-printf '\nNæste skridt: åbn MovieBench, cast noget, og se om TV'"'"'et bliver ved med at spille.\n'
+printf '\nNæste skridt: åbn MovieBench, cast noget, og se om TV-et bliver ved med at spille.\n'
