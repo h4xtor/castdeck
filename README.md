@@ -1,6 +1,6 @@
 # castdeck
 
-Cast-first source deck: MovieBench (Android) + MovieBridge (X280) + det der
+Cast-first source deck: MovieBench (Android) + MovieBridge (PC rendering + subtitles hardcoded) + det der
 hører til, så film kan sendes fra telefonen til Chromecast Ultra / Philips 65".
 
 ## Hvad ligger her
