@@ -162,7 +162,14 @@ public final class FriendsCast {
         if (text == null || text.trim().isEmpty()) {
             return null;
         }
-        List cues = Srt.cues(text);
+        List cues;
+        try {
+            cues = Srt.cues(text);
+        } catch (Throwable t) {
+            // A bad subtitle must never crash the cast: fall back to no track.
+            Log.w(TAG, "subtitle parse failed: " + t.getClass().getSimpleName());
+            return null;
+        }
         if (cues == null || cues.isEmpty()) {
             return null;
         }

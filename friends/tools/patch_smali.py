@@ -106,7 +106,16 @@ patch("sx/movybench/CcMenu.smali",
       ".end method\n\n"
       ".method static mode()Ljava/lang/String;\n")
 
-# 6. Version: upgrade over the installed Friends 1.12 (versionCode 13).
+# 6. Srt.stripTags: the ASS-tag regex "\{\\[^}]*}" leaves the final } unescaped.
+# Android/ICU rejects a bare } (PatternSyntaxException), so Srt.cues() throws on
+# any OpenSubtitles .srt that carries {\anX}-style tags. On the phone the overlay
+# swallows it (subtitles silently vanish); on Cast it killed the prep thread and
+# no video/subtitles reached the TV. Escaping } -> \} fixes both paths.
+patch("sx/movybench/sub/Srt.smali",
+      r'const-string v0, "\\{\\\\[^}]*}"',
+      r'const-string v0, "\\{\\\\[^}]*\\}"')
+
+# 7. Version: upgrade over the installed Friends 1.12 (versionCode 13).
 yml = os.path.join(DEC, "apktool.yml")
 with open(yml, encoding="utf-8") as f:
     y = f.read()
