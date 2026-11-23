@@ -9,5 +9,6 @@ rm -rf "$OUT" && mkdir -p "$OUT"
 javac --release 11 -encoding UTF-8 -d "$OUT" \
     "$HERE/src/sx/movybench/VttBuilder.java" \
     "$HERE/src/sx/movybench/SubServer.java" \
+    "$HERE/src/sx/movybench/AutoSubPolicy.java" \
     "$HERE/test/sx/movybench/FriendsTests.java"
 java -cp "$OUT" sx.movybench.FriendsTests

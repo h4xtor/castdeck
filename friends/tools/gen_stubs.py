@@ -173,7 +173,65 @@ public final class CastRemote { static String subs() { return null; } }
 """,
     "sx/movybench/CcMenu.java": """
 package sx.movybench;
-public final class CcMenu { static String mode() { return null; } static double offsetSeconds() { return 0; } }
+public final class CcMenu {
+  static String mode() { return null; }
+  static double offsetSeconds() { return 0; }
+  public static String preferredSearch(String lang) { return null; }
+}
+""",
+    "sx/movybench/Prefs.java": """
+package sx.movybench;
+public final class Prefs {
+  public static boolean autoSub(android.content.Context c) { return false; }
+  public static String lang(android.content.Context c) { return null; }
+  public static String osKey(android.content.Context c) { return null; }
+  public static String subdlKey(android.content.Context c) { return null; }
+}
+""",
+    "sx/movybench/TitleParser.java": """
+package sx.movybench;
+public final class TitleParser {
+  public int episode; public int season;
+  public String imdb; public String raw; public String title; public String year;
+  public static TitleParser parse(String a, String b, String c, String d) { return null; }
+  public boolean sane() { return false; }
+}
+""",
+    "sx/movybench/sub/ImdbResolver.java": """
+package sx.movybench.sub;
+public final class ImdbResolver { public static String resolve(String title, String year) { return null; } }
+""",
+    "sx/movybench/sub/SubProvider.java": """
+package sx.movybench.sub;
+public interface SubProvider {
+  String name();
+  String download(SubtitleResult r, String key) throws Exception;
+  public static final class Query {
+    public int episode; public int season;
+    public String imdb; public String lang; public String title; public String year;
+    public Query() { }
+  }
+}
+""",
+    "sx/movybench/sub/SubtitleResult.java": """
+package sx.movybench.sub;
+public final class SubtitleResult {
+  public final String provider = null;
+  public final String release = null;
+  public final String language = null;
+}
+""",
+    "sx/movybench/sub/SubtitleEngine.java": """
+package sx.movybench.sub;
+public final class SubtitleEngine {
+  public static final class Report {
+    public final java.util.List errors = null;
+    public final java.util.List results = null;
+  }
+  public static java.util.List providers(android.content.Context c) { return null; }
+  public static Report searchBlocking(android.content.Context c, SubProvider.Query q) { return null; }
+  public static SubtitleResult best(java.util.List l) { return null; }
+}
 """,
     "sx/movybench/Bridge.java": """
 package sx.movybench;

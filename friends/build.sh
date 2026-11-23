@@ -21,8 +21,8 @@ D8="$TOOLS/bt/android-14/lib/d8.jar"
 APKSIGNER="$TOOLS/bt/android-14/lib/apksigner.jar"
 APKTOOL="$TOOLS/apktool.jar"
 KEYSTORE="${MB_KEYSTORE:-$REPO/mb.keystore}"
-VCODE="${FRIENDS_VERSION_CODE:-14}"
-VNAME="${FRIENDS_VERSION_NAME:-1.13-friends}"
+VCODE="${FRIENDS_VERSION_CODE:-15}"
+VNAME="${FRIENDS_VERSION_NAME:-1.14-friends}"
 OUT="$HERE/out"
 APK_NAME="MovieBench_Friends_${VNAME}.apk"
 
@@ -43,7 +43,8 @@ find "$HERE/src" "$OUT/stubs" -name '*.java' > "$OUT/sources.txt"
 javac --release 11 -nowarn -encoding UTF-8 -cp "$ANDROID_JAR" -d "$OUT/cls" @"$OUT/sources.txt"
 
 echo "== 4/8 d8 (only our classes, never the stubs)"
-OWN=$(cd "$OUT/cls" && ls sx/movybench/FriendsCast*.class sx/movybench/SubServer*.class sx/movybench/VttBuilder*.class)
+OWN=$(cd "$OUT/cls" && ls sx/movybench/FriendsCast*.class sx/movybench/FriendsAutoSub*.class sx/movybench/AutoSubPolicy*.class \
+    sx/movybench/SubServer*.class sx/movybench/VttBuilder*.class)
 (cd "$OUT/cls" && java -cp "$D8" com.android.tools.r8.D8 --release --min-api 26 \
     --lib "$ANDROID_JAR" --classpath "$OUT/cls" --output "$OUT/dex" $OWN)
 

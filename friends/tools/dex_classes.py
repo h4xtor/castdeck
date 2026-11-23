@@ -8,7 +8,7 @@ import re
 import struct
 import sys
 
-ALLOWED = re.compile(r"^Lsx/movybench/(FriendsCast|SubServer|VttBuilder)(\$[A-Za-z0-9_]+)?;$")
+ALLOWED = re.compile(r"^Lsx/movybench/(FriendsCast|FriendsAutoSub|AutoSubPolicy|SubServer|VttBuilder)(\$[A-Za-z0-9_]+)?;$")
 
 
 def uleb(data, pos):

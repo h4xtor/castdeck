@@ -30,6 +30,7 @@ public final class FriendsTests {
         serverVersioning();
         serverHead();
         serverConcurrent();
+        autoSubPolicy();
 
         System.out.println("passed: " + passed + ", failed: " + FAILED.size());
         for (String f : FAILED) {
@@ -38,6 +39,25 @@ public final class FriendsTests {
         if (!FAILED.isEmpty()) {
             System.exit(1);
         }
+    }
+
+    // ---------------------------------------------------------------- AutoSubPolicy
+
+    static void autoSubPolicy() {
+        eq("lang da default", "da", AutoSubPolicy.searchLang("da", null));
+        eq("lang blank pref", "da", AutoSubPolicy.searchLang("da", "  "));
+        eq("lang pref kept", "sv", AutoSubPolicy.searchLang("da", " SV "));
+        eq("lang en-us mode", "en", AutoSubPolicy.searchLang("en-us", "da"));
+        eq("lang translate mode", "en", AutoSubPolicy.searchLang("translate-da", "da"));
+        eq("title null", false, AutoSubPolicy.titleUsable(null));
+        eq("title blank", false, AutoSubPolicy.titleUsable("  "));
+        eq("title Stream", false, AutoSubPolicy.titleUsable("Stream"));
+        eq("title site fallback", false, AutoSubPolicy.titleUsable("MovieBench"));
+        eq("title real", true, AutoSubPolicy.titleUsable("Friends S01E01"));
+        eq("key trims", "Friends S01E01|site", AutoSubPolicy.key(" Friends S01E01 ", " site "));
+        eq("key null", "|", AutoSubPolicy.key(null, null));
+        eq("key differs per episode", false,
+                AutoSubPolicy.key("Friends S01E01", "x").equals(AutoSubPolicy.key("Friends S01E02", "x")));
     }
 
     // ---------------------------------------------------------------- VttBuilder

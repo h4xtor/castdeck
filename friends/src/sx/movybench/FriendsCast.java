@@ -63,7 +63,17 @@ public final class FriendsCast {
 
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
 
+    /** How long a cast waits for the OpenSubtitles lookup before starting without subtitles. */
+    static final long AUTO_WAIT_MS = 12000L;
+    /** Debounce for subtitles chosen on the phone while already casting. */
+    static final long PUSH_DELAY_MS = 900L;
+
     private static volatile String lastVtt;
+    private static volatile String pendingVtt;
+    private static volatile Context appCtx;
+    private static volatile String autoText;
+    private static volatile String autoKey = "";
+    private static final Push PUSH = new Push();
     private static volatile String lastTitle = "Stream";
     private static volatile String lastSubtitle = "";
     private static RemoteMediaClient watched;
@@ -91,6 +101,7 @@ public final class FriendsCast {
             lastSubtitle = sub == null ? "" : sub;
         }
         Context app = ctx.getApplicationContext();
+        appCtx = app;
         Thread t = new Thread(new Prep(app, url, lastTitle, lastSubtitle, cb, startMs),
                 "friends-cast-prep");
         t.setDaemon(true);
@@ -103,6 +114,28 @@ public final class FriendsCast {
      * "saved for next cast".
      */
     public static boolean selectCaption(Activity a, String mode) {
+        return apply(a, mode);
+    }
+
+    /**
+     * Called (via smali hook) whenever the phone gets new subtitle text - e.g. after
+     * the user searched and downloaded one while a cast is running. Pushes it to the
+     * TV after a short debounce; a no-op when nothing is being cast.
+     */
+    public static void onSubs(String text) {
+        try {
+            Context c = appCtx;
+            if (text == null || c == null || !CastFlow.friends(c)) {
+                return;
+            }
+            MAIN.removeCallbacks(PUSH);
+            MAIN.postDelayed(PUSH, PUSH_DELAY_MS);
+        } catch (Throwable ignored) {
+            // never let a subtitle hook break the phone overlay
+        }
+    }
+
+    static boolean apply(Context a, String mode) {
         try {
             if (a == null || !CastFlow.friends(a)) {
                 return false;
@@ -125,6 +158,9 @@ public final class FriendsCast {
                 rmc.setActiveMediaTracks(new long[] {TRACK_ID});
                 toast(a, "Undertekster vises på TV");
                 return true;
+            }
+            if (vtt.equals(pendingVtt)) {
+                return true; // this exact text is already on its way to the TV
             }
             String source = CastProxy.lastSource();
             if (source == null || source.isEmpty()) {
@@ -159,6 +195,11 @@ public final class FriendsCast {
             return null;
         }
         String text = CastRemote.subs();
+        if (text == null || text.trim().isEmpty()) {
+            // Nothing chosen on the phone: use what the cast-time lookup found,
+            // but only for the film/episode it was fetched for.
+            text = AutoSubPolicy.key(lastTitle, lastSubtitle).equals(autoKey) ? autoText : null;
+        }
         if (text == null || text.trim().isEmpty()) {
             return null;
         }
@@ -298,7 +339,103 @@ public final class FriendsCast {
         return st;
     }
 
+    /**
+     * Cast-time OpenSubtitles lookup. Waits up to AUTO_WAIT_MS so the video starts with
+     * subtitles when the search is quick; if it is slow the cast starts without and the
+     * job pushes the subtitles to the TV as soon as it finishes.
+     */
+    static String lookupBlocking(Context app, String title, String sub, String mode) {
+        post(new Say(app, "Søger undertekster på OpenSubtitles…"));
+        AutoJob job = new AutoJob(app, title, sub, mode);
+        Thread t = new Thread(job, "friends-autosub");
+        t.setDaemon(true);
+        t.start();
+        try {
+            t.join(AUTO_WAIT_MS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        if (job.abandonIfRunning()) {
+            post(new Say(app, "Undertekst-søgningen tager tid — sender videoen nu, tekst følger"));
+            return null;
+        }
+        return currentVtt();
+    }
+
     // ------------------------------------------------------------------ jobs
+
+    /** Background: search + download; stores the result for currentVtt(). */
+    static final class AutoJob implements Runnable {
+        private final Context app;
+        private final String title;
+        private final String sub;
+        private final String mode;
+        private boolean finished;
+        private boolean abandoned;
+
+        AutoJob(Context app, String title, String sub, String mode) {
+            this.app = app;
+            this.title = title;
+            this.sub = sub;
+            this.mode = mode;
+        }
+
+        @Override
+        public void run() {
+            String text = FriendsAutoSub.fetch(app, title, mode);
+            if (text != null) {
+                autoText = text;
+                autoKey = AutoSubPolicy.key(title, sub);
+            } else {
+                post(new Say(app, "Ingen undertekster fundet — brug CC → Søg undertekst"));
+            }
+            if (finish() && text != null) {
+                // The cast already started without subtitles: add them now.
+                post(PUSH);
+            }
+        }
+
+        private synchronized boolean finish() {
+            finished = true;
+            return abandoned;
+        }
+
+        /** True when the job is still running (and from now on pushes its own result). */
+        synchronized boolean abandonIfRunning() {
+            if (finished) {
+                return false;
+            }
+            abandoned = true;
+            return true;
+        }
+    }
+
+    /** Debounced "subtitles changed on the phone while casting" -> update the TV. */
+    static final class Push implements Runnable {
+        @Override
+        public void run() {
+            Context c = appCtx;
+            if (c != null) {
+                apply(c, CcMenu.mode());
+            }
+        }
+    }
+
+    /** Main-thread toast. */
+    static final class Say implements Runnable {
+        private final Context app;
+        private final String msg;
+
+        Say(Context app, String msg) {
+            this.app = app;
+            this.msg = msg;
+        }
+
+        @Override
+        public void run() {
+            toast(app, msg);
+        }
+    }
 
     /** Background: proxy the stream and prepare the subtitle file (no network on main). */
     static final class Prep implements Runnable {
@@ -344,7 +481,11 @@ public final class FriendsCast {
             String subUrl = null;
             String mode = CcMenu.mode();
             String vtt = currentVtt();
+            if (vtt == null && FriendsAutoSub.wanted(app, title)) {
+                vtt = lookupBlocking(app, title, sub, mode);
+            }
             if (vtt != null) {
+                pendingVtt = vtt;
                 String ip = CastProxy.localIp();
                 SubServer server = SubServer.get();
                 if (ip != null && server != null) {
@@ -444,6 +585,7 @@ public final class FriendsCast {
         }
 
         void done(boolean ok, String msg) {
+            pendingVtt = null;
             if (cb != null) {
                 cb.onResult(ok, msg);
             }
@@ -462,6 +604,7 @@ public final class FriendsCast {
 
         @Override
         public void onResult(Result r) {
+            pendingVtt = null;
             Status st = r == null ? null : r.getStatus();
             if (st != null && st.isSuccess()) {
                 if (send.subUrl != null) {

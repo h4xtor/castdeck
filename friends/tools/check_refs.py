@@ -144,7 +144,7 @@ def reverse(me, dec_dir):
     own = set()
     for _, _, ms, _ in me.classes():
         own.update(ms)
-    pat = re.compile(r"(Lsx/movybench/(?:FriendsCast|SubServer|VttBuilder)[^;]*;)->([\w<>$]+)(\([^)]*\)\S+)")
+    pat = re.compile(r"(Lsx/movybench/(?:FriendsCast|FriendsAutoSub|AutoSubPolicy|SubServer|VttBuilder)[^;]*;)->([\w<>$]+)(\([^)]*\)\S+)")
     calls, bad = 0, []
     for root, _, files in os.walk(dec_dir):
         for f in files:

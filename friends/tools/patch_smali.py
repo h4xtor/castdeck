@@ -84,6 +84,13 @@ patch("sx/movybench/CastRemote.smali",
       "    return v0\n\n"
       "    :friends_no\n")
 
+# 3b. Subtitles that arrive on the phone while casting (CC search -> download ->
+# SubtitleOverlay.set -> CastRemote.onSubs) are pushed on to the TV.
+patch("sx/movybench/CastRemote.smali",
+      ".method public static onSubs(Ljava/lang/String;)V\n    .locals 3\n",
+      ".method public static onSubs(Ljava/lang/String;)V\n    .locals 3\n\n"
+      "    invoke-static {p0}, Lsx/movybench/FriendsCast;->onSubs(Ljava/lang/String;)V\n")
+
 # 4. Phone overlay: honour the timing offset, and clearing also clears the TV text.
 patch("sx/movybench/SubtitleOverlay.smali",
       ".method public render(J)V\n    .locals 5\n",
